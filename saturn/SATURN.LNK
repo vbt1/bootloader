@@ -1,0 +1,47 @@
+SECTIONS {
+
+	.stack 0x060fff00 (NOLOAD):
+	{
+	        *(.stack)
+         	_stack = .;
+	}
+	
+	SLSTART 0x06004000 : 
+	{	
+	 		___Start = .;	
+	 		*(SLSTART)	
+	 }	
+
+	.text ALIGN(0x20) :			
+	{			
+		* (.text)			
+		*(.strings)			
+	}
+
+	.tors  ALIGN(0x10) :			/* CHANGE MADE HERE */
+	{
+		___ctors = . ;
+		*(.ctors)
+		___ctors_end = . ;
+		___dtors = . ;
+		*(.dtors)
+		___dtors_end = . ;
+	}				/* CHANGE MADE HERE */
+
+	.data ALIGN(0x10):
+	{
+		STARTOF_R = .;
+		*(.data)
+		SIZEOF_R = . - STARTOF_R;
+		ENDOF_R = .;
+	}
+	.bss ALIGN(0x10) (NOLOAD):
+	{
+		STARTOF_B = .;
+		*(.bss)
+		*( COMMON )
+		SIZEOF_B = . - STARTOF_B;
+		ENDOF_B = .;
+		_end = .;
+ 	}
+}

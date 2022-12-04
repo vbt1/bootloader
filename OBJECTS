@@ -1,0 +1,20 @@
+# source_program
+
+SRCS =  fld/Smpfld01.c
+#enclever ls l: dsi gcc std
+OBJS =	saturn/strt1_vbt.o saturn/strt2_g.o \
+../../SBL6/SEGASMP/PER/SMPCLIB/per_x12.o ../../SBL6/SEGASMP/PER/SMPCLIB/per_x22.o \
+	 $(SRCS:.c=.o)  
+
+# sans SGL
+LIBS =		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/fld_load.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_gfs.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/cdcrep.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_dma.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_int.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_sys.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_scl.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_spr.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_mth.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_csh.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_per.a 
