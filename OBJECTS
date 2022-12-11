@@ -1,20 +1,25 @@
 # source_program
 
-SRCS =  fld/Smpfld01.c
-#enclever ls l: dsi gcc std
-OBJS =	saturn/strt1_vbt.o saturn/strt2_g.o \
-../../SBL6/SEGASMP/PER/SMPCLIB/per_x12.o ../../SBL6/SEGASMP/PER/SMPCLIB/per_x22.o \
-	 $(SRCS:.c=.o)  
+SRCS = fld/Smpfld01.c saturn/font.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs2.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs_cdb2.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs_cdc2.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs_cdf2.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs_trn2.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs_buf2.c \
+l:/saturn/SBL6/SEGALIB/GFS2/gfs_dir2.c
+
+#enclever ls h: dsi gcc std
+OBJS =	saturn/strt1_vbt.o saturn/strt2_g.o ../../SBL6/SEGASMP/PER/SMPCLIB/per_x12.o ../../SBL6/SEGASMP/PER/SMPCLIB/per_x22.o $(SRCS:.c=.o)
 
 # sans SGL
-LIBS =		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/fld_load.a \
-		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_gfs.a \
+LIBS =	l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/fld_load.a \
 		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/cdcrep.a \
-		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_dma.a \
 		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_int.a \
-		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_sys.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_per.a \
 		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_scl.a \
-		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_spr.a \
 		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_mth.a \
-		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_csh.a \
-		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_per.a 
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_spr.a \
+		l:/saturn/SBL6/SEGALIB/LIB/vbtelf4/sega_sys.a
+
+

@@ -121,19 +121,23 @@ $(LDFILE) : $(MAKEFILE)
 # suffix
 .SUFFIXES: .asm
 
-.c.o:
+#.c.o:
    
-   $(CC) $< $(DFLAGS) $(CCFLAGS) -o $@
+#   $(CC) $< $(DFLAGS) $(CCFLAGS) -o $@
+
+saturn/font.o:
+	$(CC)  -m2 -Os -fomit-frame-pointer -Wall -c -Il:/saturn/SBL6/SEGASMP/PER/SMPCLIB -Il:/saturn/SBL6/SEGALIB/INCLUDE  -I. saturn/font.c -o $@
+
 
 fld/Smpfld01.o:
-	$(CC)  -m2 -O3 -fomit-frame-pointer -Wall -c -IL:/saturn/SBL6/SEGALIB/INCLUDE -Il:/saturn/SBL6/SEGASMP/PER/SMPCLIB -I. -I./cpu  fld/Smpfld01.c -o $@
+	$(CC)  -m2 -Os -fomit-frame-pointer -Wall -c -Il:/saturn/SBL6/SEGASMP/PER/SMPCLIB -Il:/saturn/SBL6/SEGALIB/INCLUDE  -I. fld/Smpfld01.c -o $@
 
 per_x1.o:
-	$(CC) -O3 -fomit-frame-pointer  L:/saturn/SBL6/SEGASMP/PER/SMPCLIB/per_x1.c -o l:/saturn/SBL6/SEGASMP/PER/SMPCLIB/$@
+	$(CC) -O3 -fomit-frame-pointer  h:/saturn/SBL6/SEGASMP/PER/SMPCLIB/per_x1.c -o h:/saturn/SBL6/SEGASMP/PER/SMPCLIB/$@
 
 
 per_x2.o:
-	$(CC) -O3 -fomit-frame-pointer  :/saturn/SBL6/SEGASMP/PER/SMPCLIB/per_x2.c -o h:/saturn/SBL6/SEGASMP/PER/SMPCLIB/$@
+	$(CC) -O3 -fomit-frame-pointer  h:/saturn/SBL6/SEGASMP/PER/SMPCLIB/per_x2.c -o h:/saturn/SBL6/SEGASMP/PER/SMPCLIB/$@
 
 
 
@@ -145,9 +149,3 @@ clean:
 
 	
 #		$(RM) $(OBJS) $(TARGET:.elf=.*)
-
-
-
-
-
-
