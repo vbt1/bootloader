@@ -32,11 +32,14 @@
 #include    "per_x.h"
 //#include    "string.h"
 
-#define TITI 1
 #define BITMAP_PIXEL_WIDTH  352
 #define BITMAP_PIXEL_HEIGHT 240
 #define	NBG1_VDP2_VRAM_BASE_ADDR	SCL_VDP2_VRAM_B0
-#define GAME_BY_PAGE 7
+#define GAME_BY_PAGE 12
+#define TVMD        (*(Uint16 *)0x25F80000)
+#define TVSTAT      (*(volatile Uint16 *)0x25F80004)
+#define TVOFF   TVMD &= 0x7fff
+#define TVON     TVMD |= 0x8000
 
 unsigned char selected = 0;
 unsigned char col[4]={0,1,2,3};
@@ -49,7 +52,7 @@ extern Uint8	FntAsciiFontData2bpp[1600];
 #define MAX_OPEN        4
 
 /* ルートディレクトリにあるファイル数 */
-#define MAX_DIR        20
+#define MAX_DIR        34
 
 /*****************************************************************************
  *      関数の宣言
@@ -104,8 +107,6 @@ void	ClrVram(volatile Uint8 *buff)
 }
 
 #endif
-
-#ifdef TITI
 //--------------------------------------------------------------------------------------------------------------------------------------
 int LoadFile(char *name, Uint8 *location, Uint32 size)
 {
@@ -151,7 +152,7 @@ void VDP2_InitVRAM(void)
 
 	while (loop < maxloop)
 	{
-		*((Uint32 *) (SCL_VDP2_VRAM_A0 + loop)) = 0;
+		*((Uint32 *) (SCL_VDP2_VRAM_A0 + loop)) = 0x0000;
 
 		loop += 4;
 	}
@@ -170,8 +171,6 @@ void VDP2_InitVRAM(void)
 	
 }
 //--------------------------------------------------------------------------------------------------------------
-#endif
-
 int main()
 {
     Sint32 ret;
@@ -191,7 +190,7 @@ Uint16			cyclePat[] =
 				};
 
 	SclConfig	config;
-
+	
     /* ディレクトリ情報管理領域のsetup */
 //	*((Uint32 *)GFS_DDS_ADDR) = 0x20202020;	
     FLD_INIT_DDS(); // equivalent a la ligne du dessus
@@ -201,10 +200,14 @@ Uint16			cyclePat[] =
 
     /* ファイルシステムの初期化 */
     FLD_INIT_DDS();
+	
     ret = GFS_Init(MAX_OPEN, lib_work, &dirtbl);
+	
+
+	
     if (ret <= 0) {
 		/*	失敗すると、自分自身を起動する */
-		SYS_Exit(0);
+//		SYS_Exit(0);
     }
 #if 1
 	*(volatile Uint16 *)0x25F80000 &= 0x7fff;
@@ -228,7 +231,7 @@ Uint16			cyclePat[] =
 	SCL_SetPriority(SCL_NBG1,5);
 	SCL_SetPriority(SCL_NBG0,6);	
 
-   	Uint16 BackCol = 0x0000;
+   	Uint16 BackCol = 0x00801F;
 	SCL_SetBack(SCL_VDP2_VRAM+0x80000-2,1,&BackCol);
 
 	/* Configure VDP2 VRAM */
@@ -268,7 +271,8 @@ Uint16			cyclePat[] =
     SCL_SET_N1PRIN(3);
 	
 	PER_SMPC_RES_ENA();/* リセットボタン有効 */
-
+	TVOFF;
+    SCL_DisplayFrame();	
     changePic("MULTI");
 
 	ClrVram((volatile Uint8 *)SCL_VDP2_VRAM_B0);
@@ -284,7 +288,8 @@ RGB( 164>>3, 247>>3, 197>>3 )/*bordure*/,RGB( 0>>3,0>>2,0>>3 ),RGB( 82>>3, 181>>
    	SCL_SetColRam(SCL_NBG1,0,16,palette);
 		
 	GFS_Load(GFS_NameToId((Sint8*)"FONT.BIN"),0,(void *)&FntAsciiFontData2bpp[0],1600);
-#endif	
+#endif
+	TVON;	
 	display_menu();
     return 0;
 }
@@ -388,6 +393,9 @@ trigger_t	pltrigger[2],pltriggerE[2];
 			}
 		}
 	}
+	SCL_DisplayFrame();	
+	SCL_DisplayFrame();	
+	SCL_DisplayFrame();	
 	return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -426,8 +434,13 @@ unsigned char pGames[GAME_BY_PAGE][40]={
 	"Spear Of Destiny : Missions 1",
 	"Spear Of Destiny : Missions 2",
 	"Spear Of Destiny : Missions 3",
+	"Halloween Wolf",
 	"XMas Wolf",
-	"Burgerstein"};
+	"Burgerstein",
+	"Hotel Romanstein",
+	"The Greinholdt Covenant I:The plan",
+	"Krankenstein II",
+	"The Nazi Ambush!"};
 
 	unsigned int l;
 	unsigned int m;
@@ -440,7 +453,7 @@ unsigned char pGames[GAME_BY_PAGE][40]={
 
 	do
 	{
-		m=80;
+		m=74;
 
 		if(modified==1)
 		{
